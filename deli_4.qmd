@@ -1,0 +1,79 @@
+---
+title: "Deliverable 4"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyr)
+library(readr)
+library(dplyr)
+library(readxl)
+library(arrow)
+```
+
+```{r}
+#reading in census data file
+cens <- read_csv("https://raw.githubusercontent.com/Data-Pre-Processing/Deliverable3/refs/heads/main/ReshapedAndJoinedData/census_wiki_join.csv")
+
+#viewing dataset
+head(cens)
+
+#aggregation with one group, one function, and one input variable (calculating the total population for each state)
+
+popSumState=aggregate(data=cens, population_est_2019~state, sum)
+print(popSumState)
+
+#writing files for output
+saveRDS(popSumState, file= "output111.rds")
+write.csv(popSumState, "output111.csv")
+arrow::write_parquet(popSumState, sink="output111.parquet")
+
+
+
+
+#aggregation with two groups, two functions, and one input variable (calulating total population for each county in each state and average area for each county in each state)
+
+pop_sum_area=aggregate(data = cens, cbind(population_est_2019, area_sq_mi) ~ state + county, 
+  function(x) c(total = sum(x), avg = mean(x)))
+head(pop_sum_area) #this would be more interesting if the dataset contained other states but this one only contains Massachusetts
+
+#totals and averages in separate columns and dropping old columns to keep all the same length
+pop_sum_area$population_total <- pop_sum_area$population_est_2019[, "total"]
+pop_sum_area$population_avg <- pop_sum_area$population_est_2019[, "avg"]
+pop_sum_area$area_total <- pop_sum_area$area_sq_mi[, "total"]
+pop_sum_area$area_avg <- pop_sum_area$area_sq_mi[, "avg"]
+
+pop_sum_area <- pop_sum_area[, !names(pop_sum_area) %in% c("population_est_2019", "area_sq_mi")]
+
+#writing files for output
+saveRDS(pop_sum_area, file= "output221.rds")
+write.csv(pop_sum_area, "output221.csv")
+arrow::write_parquet(pop_sum_area, sink="output221.parquet")
+
+
+
+
+#aggregation with one group, two input variables, and a function for each (sum for population and mean for area by state)
+
+pop_area_state=aggregate(data=cens, cbind(population_est_2019, area_sq_mi) ~ state, 
+                         function(x) c(total= sum(x), avg = mean(x)))
+
+print(pop_area_state) #again, this dataset would be more interesting if it contained other states but i'm working with what i have
+
+#total and average values for both population and area into separate columns
+
+pop_area_state$population_total <- pop_area_state$population_est_2019[, "total"]
+pop_area_state$population_avg <- pop_area_state$population_est_2019[, "avg"]
+pop_area_state$area_total <- pop_area_state$area_sq_mi[, "total"]
+pop_area_state$area_avg <- pop_area_state$area_sq_mi[, "avg"]
+
+#dropping old columns so all columns are the same length
+
+pop_area_state <- pop_area_state[, !names(pop_area_state) %in% c("population_est_2019", "area_sq_mi")]
+
+#writing files for output
+saveRDS(pop_area_state, file= "output12f1f2.rds")
+write.csv(pop_area_state, "output12f1f2.csv")
+arrow::write_parquet(pop_area_state, sink="output12f1f2.parquet")
+```
