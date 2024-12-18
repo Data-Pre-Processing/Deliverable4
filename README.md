@@ -4,7 +4,7 @@ This is the final deliverable for DPP 690R. You can acces my code You can access
 Data in the repo contains reshaped U.S. Census Bureau data for 2019 population estimates by Massachusetts county.
 
 ## Codes in the repo:
-R to show aggregatiion processes via the U.S. Census Bureau data
+R to show aggregation processes via the U.S. Census Bureau data
 
 R to save outputs as rds, csv, and parquet files
 
