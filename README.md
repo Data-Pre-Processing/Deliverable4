@@ -1,5 +1,5 @@
 # Deliverable 4
-This is the final deliverable for DPP 690R. You can acces my code You can access my code [here](https://data-pre-processing.github.io/Deliverable4/)
+This is the final deliverable for DPP 690R. You can acces my code You can access my code
 
 Data in the repo contains reshaped U.S. Census Bureau data for 2019 population estimates by Massachusetts county.
 
