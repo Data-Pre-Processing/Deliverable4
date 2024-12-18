@@ -5,6 +5,7 @@ Data in the repo contains reshaped U.S. Census Bureau data for 2019 population e
 
 ## Codes in the repo:
 R to show aggregatiion processes via the U.S. Census Bureau data
+
 R to save outputs as rds, csv, and parquet files
 
 ## Data in the repo:
